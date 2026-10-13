@@ -22,15 +22,22 @@ jobs:
       KEY_ALIAS: sawa
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with: { distribution: temurin, java-version: "17" }
-      - uses: actions/setup-node@v4
-        with: { node-version: "20" }
+      - uses: actions/setup-node@v5
+        with: { node-version: "22" }
       - name: Android SDK licenses
         run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null 2>&1 || true
       - name: Install Bubblewrap
         run: |
           npm i -g @bubblewrap/cli
+          # Bubblewrap يتوقّع التخطيط القديم tools/bin/sdkmanager — نربطه بـ cmdline-tools/latest
+          if [ ! -e "$ANDROID_HOME/tools/bin/sdkmanager" ]; then
+            (mkdir -p "$ANDROID_HOME/tools" 2>/dev/null || sudo mkdir -p "$ANDROID_HOME/tools")
+            (ln -sfn "$ANDROID_HOME/cmdline-tools/latest/bin" "$ANDROID_HOME/tools/bin" 2>/dev/null || sudo ln -sfn "$ANDROID_HOME/cmdline-tools/latest/bin" "$ANDROID_HOME/tools/bin")
+            (ln -sfn "$ANDROID_HOME/cmdline-tools/latest/lib" "$ANDROID_HOME/tools/lib" 2>/dev/null || sudo ln -sfn "$ANDROID_HOME/cmdline-tools/latest/lib" "$ANDROID_HOME/tools/lib")
+          fi
+          ls -la "$ANDROID_HOME/tools/bin/" | head -3
           mkdir -p ~/.bubblewrap
           printf '{"jdkPath":"%s","androidSdkPath":"%s"}\n' "$JAVA_HOME" "$ANDROID_HOME" > ~/.bubblewrap/config.json
       - name: Keystore (from secret, or create on first run)
