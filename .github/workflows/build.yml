@@ -61,7 +61,8 @@ jobs:
             "$(jq -r .packageId twa-manifest.json)" "$FP" > assetlinks.json
       - name: Version code = run number
         run: |
-          jq --argjson n "${{ github.run_number }}" '.appVersionCode = $n | .appVersionName = ("1.0." + ($n|tostring)) | .appVersion = ("1.0." + ($n|tostring))' twa-manifest.json > m.json && mv m.json twa-manifest.json
+          jq --argjson n "${{ github.run_number }}" '.appVersionCode = $n | .appVersionName = ("1.0." + ($n|tostring)) | .appVersion = ("1.0." + ($n|tostring)) | .minSdkVersion = ([(.minSdkVersion // 24), 24] | max)' twa-manifest.json > m.json && mv m.json twa-manifest.json
+          echo "minSdkVersion = $(jq .minSdkVersion twa-manifest.json)" 
       - name: Generate Android project
         run: bubblewrap update --skipVersionUpgrade --manifest=./twa-manifest.json
       - name: Build APK + AAB
