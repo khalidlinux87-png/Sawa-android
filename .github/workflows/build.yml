@@ -64,7 +64,11 @@ jobs:
           jq --argjson n "${{ github.run_number }}" '.appVersionCode = $n | .appVersionName = ("1.0." + ($n|tostring)) | .appVersion = ("1.0." + ($n|tostring)) | .minSdkVersion = ([(.minSdkVersion // 24), 24] | max)' twa-manifest.json > m.json && mv m.json twa-manifest.json
           echo "minSdkVersion = $(jq .minSdkVersion twa-manifest.json)" 
       - name: Generate Android project
-        run: bubblewrap update --skipVersionUpgrade --manifest=./twa-manifest.json
+        run: |
+          bubblewrap update --skipVersionUpgrade --manifest=./twa-manifest.json
+          # ضمانة: مكتبة androidbrowserhelper تشترط minSdk 24 مهما قال twa-manifest.json
+          sed -i -E 's/minSdkVersion[[:space:]]+[0-9]+/minSdkVersion 24/; s/minSdk[[:space:]]+[0-9]+/minSdk 24/' app/build.gradle
+          grep -n "minSdk" app/build.gradle
       - name: Build APK + AAB
         env:
           BUBBLEWRAP_KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
