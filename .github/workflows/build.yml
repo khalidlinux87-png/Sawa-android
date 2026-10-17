@@ -21,6 +21,15 @@ jobs:
           [ -f sawa-native.zip ] || { echo "::error::ارفع الملفّ sawa-native.zip إلى جذر المستودع"; exit 1; }
           rm -rf native && mkdir native && unzip -q -o sawa-native.zip -d native
           ls -la native native/app
+          # أيّ نسخةٍ من الحزمة نبني؟ (يظهر في رقم الإصدار وملخّص التشغيل)
+          TAG=$(cat native/SAWA_BUILD 2>/dev/null | tr -d '[:space:]'); [ -n "$TAG" ] || TAG=c72
+          echo "SAWA_TAG=$TAG" >> "$GITHUB_ENV"
+          {
+            echo "## 📦 الحزمة: $TAG — حجم sawa-native.zip: $(( $(stat -c%s sawa-native.zip) / 1024 )) KB"
+            for f in app/src/main/java/com/sawaaap/app/AppLock.java app/src/main/java/com/sawaaap/app/QrScan.java app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml; do
+              [ -f "native/$f" ] && echo "- ✅ $f" || echo "- ❌ $f (غير موجود — هذه حزمة قديمة)"
+            done
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - uses: actions/setup-java@v4
         with:
@@ -43,7 +52,7 @@ jobs:
           echo "KS_PATH=$RUNNER_TEMP/sawa.keystore" >> "$GITHUB_ENV"
           echo "KS_ALIAS=$ALIAS" >> "$GITHUB_ENV"
           echo "VERSION_CODE=$((1000 + GITHUB_RUN_NUMBER))" >> "$GITHUB_ENV"
-          echo "VERSION_NAME=2.0.$GITHUB_RUN_NUMBER" >> "$GITHUB_ENV"
+          echo "VERSION_NAME=2.0.$GITHUB_RUN_NUMBER-$SAWA_TAG" >> "$GITHUB_ENV"
           INFO=$(keytool -list -v -keystore "$RUNNER_TEMP/sawa.keystore" -alias "$ALIAS" -storepass "$KEYSTORE_PASSWORD")
           SHA1=$(echo "$INFO" | grep -E "^\s*SHA1:" | head -1 | awk '{print $2}')
           SHA256=$(echo "$INFO" | grep -E "^\s*SHA256:" | head -1 | awk '{print $2}')
