@@ -9,6 +9,9 @@ on:
     paths: ['sawa-native.zip', '.github/workflows/build.yml']
   workflow_dispatch:
 
+permissions:
+  contents: write   # C118: نشر APK للتنزيل المباشر (Releases)
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -134,3 +137,29 @@ jobs:
           name: Sawa-android-native
           path: out/*
           retention-days: 30
+
+      # C118: رابط تنزيل مباشر ثابت (إلى أن يُنشر في Google Play) — يُستبدل الملفّ في كلّ بناء
+      - name: Publish APK for direct download
+        if: github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cp native/app/build/outputs/apk/release/app-release.apk Sawa.apk
+          SIZE=$(( $(stat -c%s Sawa.apk) / 1024 / 1024 ))
+          gh release delete android-latest --repo "$GITHUB_REPOSITORY" --yes --cleanup-tag 2>/dev/null || true
+          gh release create android-latest Sawa.apk --repo "$GITHUB_REPOSITORY" --latest \
+            --title "سوا لأندرويد $VERSION_NAME" \
+            --notes "النسخة $VERSION_NAME ($SAWA_TAG) — ${SIZE} MB. ثبّتها فوق النسخة الحاليّة؛ بياناتك تبقى كما هي."
+          PRIV=$(gh api "repos/$GITHUB_REPOSITORY" --jq .private)
+          URL="https://github.com/$GITHUB_REPOSITORY/releases/download/android-latest/Sawa.apk"
+          {
+            echo "## 📥 رابط التنزيل المباشر"
+            echo ""
+            echo "$URL"
+            echo ""
+            if [ "$PRIV" = "true" ]; then
+              echo "⚠️ المستودع **خاصّ** — هذا الرابط لا يعمل إلّا لك. اجعله عامّاً (Settings ← General ← Danger Zone ← Change visibility) ليصل الرابط لأهلك، أو أخبر Claude ليجد طريقاً آخر."
+            else
+              echo "✅ المستودع عامّ — الرابط يعمل لأيّ أحد، وصفحة www.sawaaap.com/download تشير إليه."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
