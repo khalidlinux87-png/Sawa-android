@@ -31,7 +31,7 @@ jobs:
             done
           } >> "$GITHUB_STEP_SUMMARY"
 
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '17'
@@ -80,7 +80,26 @@ jobs:
         working-directory: native
         env:
           KS_PASS: ${{ secrets.KEYSTORE_PASSWORD }}
-        run: gradle --no-daemon --stacktrace assembleRelease bundleRelease
+        run: |
+          # C115b: سبب الفشل يُكتب في «Annotations» وملخّص التشغيل (لا حاجة للبحث في السجلّ الطويل)
+          set +e
+          gradle --no-daemon assembleRelease bundleRelease 2>&1 | tee "$RUNNER_TEMP/gradle.log"
+          RC=${PIPESTATUS[0]}
+          if [ "$RC" != "0" ]; then
+            {
+              echo "## ❌ سبب فشل البناء"
+              echo '```'
+              grep -E "^e: |error:|\.java:[0-9]+: error|Could not (find|resolve)|What went wrong" -A3 "$RUNNER_TEMP/gradle.log" | head -60
+              echo '```'
+              echo '```'
+              sed -n '/What went wrong/,/Try:/p' "$RUNNER_TEMP/gradle.log" | head -40
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+            grep -E "\.java:[0-9]+: error" "$RUNNER_TEMP/gradle.log" | head -10 | while IFS= read -r l; do echo "::error::$l"; done
+            W=$(sed -n '/What went wrong/,/Try:/p' "$RUNNER_TEMP/gradle.log" | grep -v "What went wrong\|Try:\|^$" | head -6 | tr '\n' ' ')
+            echo "::error title=What went wrong::$W"
+            exit 1
+          fi
 
       - name: Google Play checks (API 36 + 16 KB pages)
         run: |
