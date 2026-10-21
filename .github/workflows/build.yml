@@ -38,7 +38,7 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v4
         with:
-          gradle-version: '8.9'
+          gradle-version: '8.11.1'   # C115: AGP 8.9.1 (لـ Android 16 / API 36)
 
       - name: Signing key + fingerprints
         env:
@@ -52,7 +52,7 @@ jobs:
           echo "KS_PATH=$RUNNER_TEMP/sawa.keystore" >> "$GITHUB_ENV"
           echo "KS_ALIAS=$ALIAS" >> "$GITHUB_ENV"
           echo "VERSION_CODE=$((1000 + GITHUB_RUN_NUMBER))" >> "$GITHUB_ENV"
-          echo "VERSION_NAME=2.0.$GITHUB_RUN_NUMBER-$SAWA_TAG" >> "$GITHUB_ENV"
+          echo "VERSION_NAME=2.0.$GITHUB_RUN_NUMBER" >> "$GITHUB_ENV"   # C115: رقمٌ نظيف يظهر في Google Play (الحزمة في ملخّص التشغيل)
           INFO=$(keytool -list -v -keystore "$RUNNER_TEMP/sawa.keystore" -alias "$ALIAS" -storepass "$KEYSTORE_PASSWORD")
           SHA1=$(echo "$INFO" | grep -E "^\s*SHA1:" | head -1 | awk '{print $2}')
           SHA256=$(echo "$INFO" | grep -E "^\s*SHA256:" | head -1 | awk '{print $2}')
@@ -81,6 +81,27 @@ jobs:
         env:
           KS_PASS: ${{ secrets.KEYSTORE_PASSWORD }}
         run: gradle --no-daemon --stacktrace assembleRelease bundleRelease
+
+      - name: Google Play checks (API 36 + 16 KB pages)
+        run: |
+          APK=native/app/build/outputs/apk/release/app-release.apk
+          python3 - "$APK" <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import sys, zipfile, struct
+          z = zipfile.ZipFile(sys.argv[1]); bad = []; n = 0
+          print("## ✅ فحص Google Play")
+          for i in z.infolist():
+              if not (i.filename.startswith("lib/arm64-v8a/") and i.filename.endswith(".so")): continue
+              n += 1; d = z.read(i.filename)
+              if d[:4] != b"\x7fELF" or d[4] != 2: continue
+              phoff, = struct.unpack_from("<Q", d, 0x20); phsz, phn = struct.unpack_from("<HH", d, 0x36)
+              al = [struct.unpack_from("<Q", d, phoff + k * phsz + 0x30)[0] for k in range(phn) if struct.unpack_from("<I", d, phoff + k * phsz)[0] == 1]
+              if al and min(al) < 16384: bad.append(f"{i.filename} (align {min(al)})")
+              if i.compress_type == zipfile.ZIP_STORED and i.header_offset % 16384: pass
+          print(f"- مكتبات arm64: {n}")
+          print("- ✅ كلّها متوافقة مع صفحات 16 KB" if not bad else "- ❌ غير متوافقة مع 16 KB: " + ", ".join(bad))
+          PY
+          echo "- targetSdk: $(grep -o 'targetSdk [0-9]*' native/app/build.gradle)" >> "$GITHUB_STEP_SUMMARY"
+          echo "- versionCode: $VERSION_CODE · versionName: $VERSION_NAME · الحزمة: $SAWA_TAG" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Collect
         run: |
