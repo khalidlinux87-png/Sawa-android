@@ -1,0 +1,6 @@
+<ar>
+أوّل إصدار لسوا على Google Play: محادثات، ومكالمات صوت وفيديو، وغرف اجتماعات، وشجرة العائلة وتذكير صلة الرحم.
+</ar>
+<en-US>
+Sawa's first release on Google Play: chats, voice and video calls, meeting rooms, family tree and family-ties reminders.
+</en-US>

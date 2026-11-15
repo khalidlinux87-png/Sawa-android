@@ -1,0 +1,42 @@
+=== App name (max 30) ===
+Sawa — Chats & Family Ties
+
+=== Short description (max 80) ===
+Chat, call and meet with family — with gentle reminders to stay in touch
+
+=== Full description (max 4000) ===
+Sawa brings your family and friends together in one Arabic-first app: chats, calls, meeting rooms, and a space for staying close to family.
+
+💬 CHATS
+• Text and voice messages, photos, videos and files.
+• Replies, reactions, delivery and read receipts.
+• Family and friend groups, polls and tasks.
+• End-to-end encrypted secret chats 🔒.
+
+📞 CALLS
+• Clear voice and video calls, even on mobile networks.
+• Switch a voice call to video in one tap.
+• Incoming-call screen even when your phone is locked.
+
+👥 ROOMS
+• Instant or scheduled meetings by link.
+• Host controls, lock, waiting room and screen sharing.
+• Minutes for decisions and tasks.
+
+🌳 FAMILY TIES
+• Build your family tree and share it with relatives.
+• See how everyone is related to you, automatically.
+• Link relatives to their Sawa accounts to message and call them from the tree.
+• Gentle reminders about people you haven't contacted in a while, and upcoming occasions.
+
+✨ ALSO
+• Daily reminder: a verse, hadith or saying about family ties.
+• Moments to share with your friends.
+• Sawa code: connect without sharing your phone number.
+• Fingerprint app lock, dark mode, Arabic and English.
+
+🔐 YOUR PRIVACY
+No ads, no selling your data, no ad trackers. Delete your account and all its data at any time.
+
+Privacy policy: https://www.sawaaap.com/privacy.html
+Support: support@sawaaap.com
