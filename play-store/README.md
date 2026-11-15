@@ -24,7 +24,8 @@
    - «✅ كلّها متوافقة مع صفحات 16 KB»
    - «targetSdk 36»
    - الحزمة **c282**
-3. من أسفل الصفحة ← **Artifacts** ← نزّل `Sawa-android-native`. فيه:
+3. **الأسهل من الهاتف:** صفحة الإصدار https://github.com/khalidlinux87-png/Sawa-android/releases/tag/android-latest ← نزّل `Sawa-2.0.N.aab` مباشرةً (بلا فكّ ضغط). الرابط نفسه يظهر في ملخّص التشغيل.
+4. أو من أسفل صفحة التشغيل ← **Artifacts** ← نزّل `Sawa-android-native` (ملفّ zip). فيه:
    - `Sawa-2.0.N.aab` ← **هذا ما يُرفع إلى Google Play**.
    - `Sawa-2.0.N.apk` ← للتجربة على هاتفك فقط.
 
