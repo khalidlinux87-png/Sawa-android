@@ -60,16 +60,17 @@ Play Console ← **Create app**:
 | News app | No |
 | Data safety | انظر الجدول في الخطوة ٥ |
 | Government app | No |
-| Financial features | **No financial features** (المحفظة مخفيّة — انظر أدناه) |
+| Financial features | **No financial features** (المحفظة للمشرفين فقط — انظر أدناه) |
 | Health | No |
 | Account deletion | `https://www.sawaaap.com/delete-account.html` |
 | Foreground service permissions | انظر الخطوة ٦ |
 | Full-screen intent | **Calling / video calling** |
 
-### المحفظة: مخفيّة في الإصدار الأوّل (C320)
+### المحفظة: للمشرفين والمدير فقط (C321)
 
-المحفظة لا تظهر لأحد، ولا حتّى للمشرفين (المفتاح `SHOW_WALLET = false` في Sawa-app ‏`app.p3.js`). يختفي معها «المحاسب الشخصيّ» لأنّ مدخله داخل المحفظة.
-في نموذج **Financial features** اختر: **«My app doesn't provide any financial features»**.
+المحفظة (ومعها المحاسب الشخصيّ) تظهر للمشرفين والمدير فقط، ولا تظهر لأيّ مستخدمٍ عاديّ، ولا في نسخة Google Play. الشاشة نفسها لا تُفتح لغيرهم بأيّ طريق.
+- في نموذج **Financial features** اختر: **«My app doesn't provide any financial features»**.
+- **حساب المراجعة يجب أن يكون مستخدماً عاديّاً.** لا تعطِ المراجع حساب مشرفٍ أو مدير أبداً.
 
 ## الخطوة ٥ — Data safety (أمان البيانات)
 
@@ -182,7 +183,7 @@ Google يوقّع النسخة النهائيّة بمفتاحٍ آخر، فيت
 |---|---|
 | Broken functionality / login | تأكّد من حساب المراجعة وأنّ كلمة المرور صحيحة |
 | Foreground service | الفيديو لا يُظهر الإشعار ← أعد التصوير |
-| Financial services | تأكّد أنّ نسخة الموقع المرفوعة فيها C320 (sw v503 أو أحدث) |
+| Financial services | تأكّد أنّ حساب المراجعة عاديّ لا مشرف، وأنّ الموقع فيه C321 (sw v504 أو أحدث) |
 | User-generated content | تأكّد من وجود الإبلاغ والحظر وأنّ طريقهما مكتوب في App access |
 | Battery optimization | نحذف `REQUEST_IGNORE_BATTERY_OPTIMIZATIONS` ونبني من جديد |
 | Data safety mismatch | قارن الجدول بسياسة الخصوصيّة؛ يجب أن تتطابقا |
@@ -190,7 +191,7 @@ Google يوقّع النسخة النهائيّة بمفتاحٍ آخر، فيت
 ## قائمة التحقّق النهائيّة
 
 - [ ] بناء c282: ✅ 16 KB · targetSdk 36
-- [ ] رفع C320 إلى Sawa-app (المحفظة مخفيّة) قبل إرسال التطبيق للمراجعة
+- [ ] حساب المراجعة مستخدمٌ عاديّ (لا يرى المحفظة) · الموقع على C321
 - [ ] حساب المراجعة (بريد + كلمة مرور) يعمل
 - [ ] App content: كلّ البنود خضراء
 - [ ] فيديو الخدمات في المقدّمة على YouTube (غير مدرج)
