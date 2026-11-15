@@ -145,17 +145,22 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           cp native/app/build/outputs/apk/release/app-release.apk Sawa.apk
+          # C322: ملفّ AAB لـ Google Play مع الإصدار نفسه ⇒ يُنزَّل مباشرةً بلا فكّ ضغط
+          AAB="Sawa-${VERSION_NAME}.aab"
+          cp native/app/build/outputs/bundle/release/app-release.aab "$AAB"
           SIZE=$(( $(stat -c%s Sawa.apk) / 1024 / 1024 ))
           gh release delete android-latest --repo "$GITHUB_REPOSITORY" --yes --cleanup-tag 2>/dev/null || true
-          gh release create android-latest Sawa.apk --repo "$GITHUB_REPOSITORY" --latest \
+          gh release create android-latest Sawa.apk "$AAB" --repo "$GITHUB_REPOSITORY" --latest \
             --title "سوا لأندرويد $VERSION_NAME" \
-            --notes "النسخة $VERSION_NAME ($SAWA_TAG) — ${SIZE} MB. ثبّتها فوق النسخة الحاليّة؛ بياناتك تبقى كما هي."
+            --notes "النسخة $VERSION_NAME ($SAWA_TAG) — ${SIZE} MB. ثبّتها فوق النسخة الحاليّة؛ بياناتك تبقى كما هي. ملفّ $AAB للرفع على Google Play فقط (لا يُثبَّت على الهاتف)."
           PRIV=$(gh api "repos/$GITHUB_REPOSITORY" --jq .private)
           URL="https://github.com/$GITHUB_REPOSITORY/releases/download/android-latest/Sawa.apk"
           {
             echo "## 📥 رابط التنزيل المباشر"
             echo ""
             echo "$URL"
+            echo ""
+            echo "**ملفّ Google Play:** https://github.com/$GITHUB_REPOSITORY/releases/download/android-latest/$AAB"
             echo ""
             if [ "$PRIV" = "true" ]; then
               echo "⚠️ المستودع **خاصّ** — هذا الرابط لا يعمل إلّا لك. اجعله عامّاً (Settings ← General ← Danger Zone ← Change visibility) ليصل الرابط لأهلك، أو أخبر Claude ليجد طريقاً آخر."
