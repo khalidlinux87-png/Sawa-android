@@ -66,12 +66,10 @@ Play Console ← **Create app**:
 | Foreground service permissions | انظر الخطوة ٦ |
 | Full-screen intent | **Calling / video calling** |
 
-### ⚠️ قرار المحفظة قبل المراجعة
+### المحفظة: مخفيّة في الإصدار الأوّل (C320)
 
-التطبيق يحوي «المحفظة» (رصيد، إرسال مال، بنوك، كهرباء) و«المحاسب الشخصيّ» (فواتير وصفحة دفع). Google Play يطلب لميزات **تحويل المال** ترخيصاً ماليّاً موثّقاً، والمراجع سيفتحها.
-- **الأنسب للنشر الأوّل:** إخفاء المحفظة لمستخدمي التطبيق المثبّت من Play (أو جعلها للمشرفين فقط كما هي الآن إن كانت كذلك) ← في نموذج Financial features اختر **«My app doesn't provide any financial features»**.
-- المحاسب الشخصيّ (تسجيل مصروفات وفواتير يدويّة دون تحريك مال) لا يُعدّ خدمةً ماليّة، ويمكن إبقاؤه.
-- إن أردت إبقاء «إرسال مال» ظاهراً، فيلزم ترخيص الجهة المشغّلة ورفع وثائقه.
+المحفظة لا تظهر لأحد، ولا حتّى للمشرفين (المفتاح `SHOW_WALLET = false` في Sawa-app ‏`app.p3.js`). يختفي معها «المحاسب الشخصيّ» لأنّ مدخله داخل المحفظة.
+في نموذج **Financial features** اختر: **«My app doesn't provide any financial features»**.
 
 ## الخطوة ٥ — Data safety (أمان البيانات)
 
@@ -88,7 +86,6 @@ Play Console ← **Create app**:
 | Personal info | Phone number | نعم | نعم | App functionality, Account management |
 | Personal info | User IDs | نعم | لا | App functionality |
 | Personal info | Other info (شجرة العائلة والمناسبات) | نعم | نعم | App functionality |
-| Financial info | Purchase history / Other financial info (المحاسب والفواتير) | نعم | نعم | App functionality |
 | Location | Precise location | نعم | نعم | App functionality (مشاركة موقع يختارها المستخدم) |
 | Messages | Other in-app messages | نعم | لا | App functionality |
 | Photos and videos | Photos, Videos | نعم | نعم | App functionality |
@@ -185,7 +182,7 @@ Google يوقّع النسخة النهائيّة بمفتاحٍ آخر، فيت
 |---|---|
 | Broken functionality / login | تأكّد من حساب المراجعة وأنّ كلمة المرور صحيحة |
 | Foreground service | الفيديو لا يُظهر الإشعار ← أعد التصوير |
-| Financial services | أخفِ المحفظة (انظر قرار المحفظة) |
+| Financial services | تأكّد أنّ نسخة الموقع المرفوعة فيها C320 (sw v503 أو أحدث) |
 | User-generated content | تأكّد من وجود الإبلاغ والحظر وأنّ طريقهما مكتوب في App access |
 | Battery optimization | نحذف `REQUEST_IGNORE_BATTERY_OPTIMIZATIONS` ونبني من جديد |
 | Data safety mismatch | قارن الجدول بسياسة الخصوصيّة؛ يجب أن تتطابقا |
@@ -193,7 +190,7 @@ Google يوقّع النسخة النهائيّة بمفتاحٍ آخر، فيت
 ## قائمة التحقّق النهائيّة
 
 - [ ] بناء c282: ✅ 16 KB · targetSdk 36
-- [ ] قرار المحفظة (إخفاء أو ترخيص)
+- [ ] رفع C320 إلى Sawa-app (المحفظة مخفيّة) قبل إرسال التطبيق للمراجعة
 - [ ] حساب المراجعة (بريد + كلمة مرور) يعمل
 - [ ] App content: كلّ البنود خضراء
 - [ ] فيديو الخدمات في المقدّمة على YouTube (غير مدرج)
