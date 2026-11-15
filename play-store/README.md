@@ -60,7 +60,7 @@ Play Console ← **Create app**:
 | News app | No |
 | Data safety | انظر الجدول في الخطوة ٥ |
 | Government app | No |
-| Financial features | انظر «قرار المحفظة» أدناه |
+| Financial features | **No financial features** (المحفظة مخفيّة — انظر أدناه) |
 | Health | No |
 | Account deletion | `https://www.sawaaap.com/delete-account.html` |
 | Foreground service permissions | انظر الخطوة ٦ |
