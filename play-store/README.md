@@ -11,7 +11,8 @@
 | `listing-en.txt` | نصوص صفحة المتجر بالإنجليزيّة | ~٣ KB |
 | `release-notes.txt` | «ما الجديد» لأوّل إصدار (عربيّ/إنجليزيّ بوسوم Play) | ~٠٫٥ KB |
 | `icon-512.png` | أيقونة المتجر 512×512 (PNG، بلا شفافيّة) | 152 KB |
-| `feature-graphic-1024x500.jpg` | الصورة الرئيسيّة 1024×500 | 45 KB |
+| `feature-graphic-1024x500.jpg` | الصورة الرئيسيّة 1024×500 (عربيّة) | 45 KB |
+| `feature-graphic-1024x500-en.jpg` | الصورة الرئيسيّة للصفحة الإنجليزيّة | 47 KB |
 
 ملفّ التطبيق نفسه (**AAB**) لا يُحفظ هنا، بل يبنيه GitHub (الخطوة ١).
 
@@ -129,7 +130,7 @@ Play Console ← **Create app**:
 **Grow users ← Store presence ← Main store listing**:
 1. انسخ الاسم والوصف القصير والكامل من `listing-ar.txt`.
 2. **App icon:** `icon-512.png` · **Feature graphic:** `feature-graphic-1024x500.jpg`.
-3. **Phone screenshots:** جاهزة في `screenshots/ar` و`screenshots/en`: ستّ صور 1080×1920 (JPG) بالترتيب: المحادثات · محادثة · مكالمة · صلة الرحم · شجرة العائلة · تذكير اليوم. ارفع `ar` للعربيّة و`en` للإنجليزيّة (العنوان إنجليزيّ، وشاشة التطبيق داخلها عربيّة).
+3. **Phone screenshots:** جاهزة في `screenshots/ar` و`screenshots/en`: ستّ صور 1080×1920 (JPG) بالترتيب: المحادثات · محادثة · مكالمة · صلة الرحم · شجرة العائلة · تذكير اليوم. ارفع `ar` للعربيّة و`en` للإنجليزيّة (عناوين وشاشات التطبيق بالإنجليزيّة).
 4. **Translations ← Add ← English (en-US)** ← الصق `listing-en.txt`، وارفع صور `screenshots/en`.
 
 **Store settings:** الفئة **Communication** · البريد: `support@sawaaap.com` · الموقع: `https://www.sawaaap.com`.
