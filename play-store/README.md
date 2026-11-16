@@ -130,7 +130,7 @@ Play Console ← **Create app**:
 **Grow users ← Store presence ← Main store listing**:
 1. انسخ الاسم والوصف القصير والكامل من `listing-ar.txt`.
 2. **App icon:** `icon-512.png` · **Feature graphic:** `feature-graphic-1024x500.jpg`.
-3. **Phone screenshots:** جاهزة في `screenshots/ar` و`screenshots/en`: ستّ صور 1080×1920 (JPG) بالترتيب: المحادثات · محادثة · مكالمة · صلة الرحم · شجرة العائلة · تذكير اليوم. ارفع `ar` للعربيّة و`en` للإنجليزيّة (العنوان إنجليزيّ، وشاشة التطبيق داخلها عربيّة).
+3. **Phone screenshots:** جاهزة في `screenshots/ar` و`screenshots/en`: ستّ صور 1080×1920 (JPG) بالترتيب: المحادثات · محادثة · مكالمة · صلة الرحم · شجرة العائلة · تذكير اليوم. ارفع `ar` للعربيّة و`en` للإنجليزيّة (عناوين وشاشات التطبيق بالإنجليزيّة).
 4. **Translations ← Add ← English (en-US)** ← الصق `listing-en.txt`، وارفع صور `screenshots/en`.
 
 **Store settings:** الفئة **Communication** · البريد: `support@sawaaap.com` · الموقع: `https://www.sawaaap.com`.
